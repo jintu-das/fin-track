@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import "./index.css";
-
-// Import the generated route tree
+import { TooltipProvider } from "./components/ui/tooltip";
 import { routeTree } from "./routeTree.gen";
+import "./index.css";
+import { SidebarProvider } from "./components/ui/sidebar";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -22,7 +22,11 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <TooltipProvider>
+        <SidebarProvider>
+          <RouterProvider router={router} />
+        </SidebarProvider>
+      </TooltipProvider>
     </StrictMode>,
   );
 }
