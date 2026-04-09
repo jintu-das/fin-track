@@ -6,5 +6,5 @@ export const Route = createFileRoute("/transactions")({
 
 // eslint-disable-next-line react-refresh/only-export-components
 function RouteComponent() {
-  return <div>Hello "/transactions"!</div>;
+  return <div className="p-6">Hello "/transactions"!</div>;
 }

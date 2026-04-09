@@ -46,8 +46,8 @@ const data = {
       icon: <LayoutDashboardIcon />,
     },
     {
-      name: "Accounts",
-      url: "/accounts",
+      name: "Budgets",
+      url: "/budgets",
       icon: <WalletCardsIcon />,
     },
     {
@@ -60,17 +60,18 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link to="/">
-                <div className="flex aspect-square size-6 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <WalletIcon className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">FinTrack</span>
+                  <span className="truncate text-xs">Wealth Management</span>
                 </div>
               </Link>
             </SidebarMenuButton>
