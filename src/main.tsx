@@ -4,7 +4,6 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { routeTree } from "./routeTree.gen";
 import "./index.css";
-import { SidebarProvider } from "./components/ui/sidebar";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -23,9 +22,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <TooltipProvider>
-        <SidebarProvider>
-          <RouterProvider router={router} />
-        </SidebarProvider>
+        <RouterProvider router={router} />
       </TooltipProvider>
     </StrictMode>,
   );

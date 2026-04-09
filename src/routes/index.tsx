@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
 // eslint-disable-next-line react-refresh/only-export-components
 function Index() {
   return (
-    <main>
+    <div>
       <h1>FinTrack</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptate
@@ -15,6 +15,6 @@ function Index() {
         consequatur explicabo! Cumque minus sint delectus vitae similique quae
         animi veniam?
       </p>
-    </main>
+    </div>
   );
 }

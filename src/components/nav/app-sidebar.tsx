@@ -42,17 +42,17 @@ const data = {
   navMain: [
     {
       name: "Dashboard",
-      url: "#",
+      url: "/",
       icon: <LayoutDashboardIcon />,
     },
     {
       name: "Accounts",
-      url: "#",
+      url: "/accounts",
       icon: <WalletCardsIcon />,
     },
     {
       name: "Transactions",
-      url: "#",
+      url: "/transactions",
       icon: <ReceiptTextIcon />,
     },
   ],
@@ -71,7 +71,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">FinTrack</span>
-                  {/* <span className="truncate text-xs">Enterprise</span> */}
                 </div>
               </Link>
             </SidebarMenuButton>
