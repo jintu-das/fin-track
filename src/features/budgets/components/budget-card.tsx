@@ -8,37 +8,41 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { MoreVerticalIcon } from "lucide-react";
+import { UtensilsIcon } from "lucide-react";
 import type { Budget } from "../types";
 
 export function BudgetCard({ budget }: Readonly<{ budget: Budget }>) {
   return (
     <Card className="w-full" key={budget.id}>
       <CardHeader>
-        <CardTitle className="text-base">{budget.name}</CardTitle>
-        <CardDescription>{budget.description}</CardDescription>
+        <CardDescription className="text-sm font-medium uppercase">
+          {budget.name}
+        </CardDescription>
+        <CardTitle className="text-xl font-semibold">
+          $ {budget.budgetedAmount}.00
+        </CardTitle>
         <CardAction>
-          <Button variant="link" size="icon">
-            <MoreVerticalIcon className="size-4" />
+          <Button variant="secondary" size="icon">
+            <UtensilsIcon className="h-4 w-4" />
           </Button>
         </CardAction>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <div className="flex items-center justify-between mb-4">
-          <p className="flex items-center gap-1">
-            <span className="text-base font-medium">
-              ${budget.budgetedAmount}
-            </span>
-            <span className="text-lg">/</span>
-            <span className="text-muted-foreground text-sm">
-              ${budget.spentAmount}
-            </span>
+          <p className="text-sm font-medium text-muted-foreground">
+            <span>SPENT ${budget.spentAmount}</span>
           </p>
+          <p>65%</p>
+        </div>
+
+        <Progress className="h-2 rounded-full" value={45} />
+
+        <div className="flex justify-between items-center">
+          <p>Burn rate : 2 days left</p>
           <p className="px-3 py-1 rounded-full bg-primary/15 grid place-content-center text-xs font-medium">
             {budget.status === "on track" ? "On Track" : "Over Budget"}
           </p>
         </div>
-        <Progress value={45} />
       </CardContent>
     </Card>
   );
