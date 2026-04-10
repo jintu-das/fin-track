@@ -15,7 +15,7 @@ function RouteComponent() {
   return (
     <>
       <PageHeader
-        title="Transactions"
+        title="Transaction History"
         description="Track your financial transactions with precision and editorial clarity."
         headingId="budgets-heading"
         action={{

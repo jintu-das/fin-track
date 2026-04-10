@@ -30,7 +30,7 @@ export function PageHeader({
       <div>
         <h1
           id={headingId}
-          className="text-3xl font-semibold tracking-tight sm:text-3xl"
+          className="text-3xl font-black tracking-tight sm:text-3xl"
         >
           {title}
         </h1>
