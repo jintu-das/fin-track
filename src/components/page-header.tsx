@@ -1,6 +1,15 @@
 import type { ReactNode } from "react";
 import { PlusIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./ui/breadcrumb";
+import { Link } from "@tanstack/react-router";
 
 type HeaderAction = Readonly<{
   label: string;
@@ -26,11 +35,29 @@ export function PageHeader({
   const actionAriaLabel = action?.ariaLabel ?? action?.label;
 
   return (
-    <header className="container mx-auto flex flex-row items-center justify-between gap-3 lg:items-start">
+    <header className="container mx-auto flex flex-row items-center justify-between gap-3 lg:items-start pt-8">
       <div>
+        <Breadcrumb className="uppercase tracking-wide">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage
+                className="text-primary font-medium"
+                aria-current="page"
+              >
+                Transactions
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <h1
           id={headingId}
-          className="text-3xl font-black tracking-tight sm:text-3xl"
+          className="text-3xl font-black tracking-tight sm:text-3xl my-1"
         >
           {title}
         </h1>
