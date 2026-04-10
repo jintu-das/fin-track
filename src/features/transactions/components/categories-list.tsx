@@ -4,9 +4,6 @@ import { CATEGORIES } from "../mock-data";
 export function CategoriesList() {
   return (
     <section className="container mx-auto flex flex-wrap gap-2 items-center">
-      <h2 className="uppercase text-xs font-medium tracking-wide text-muted-foreground">
-        Categories
-      </h2>
       <ul className="flex-wrap gap-2 inline-flex">
         {CATEGORIES.map((category, index) => (
           <li key={category}>

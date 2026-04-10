@@ -1,122 +1,87 @@
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+  Briefcase,
+  Car,
+  CircleDollarSign,
+  DotIcon,
+  Film,
+  Fuel,
+  HeartPulse,
+  Laptop,
+  type LucideIcon,
+  Plane,
+  Repeat,
+  ShoppingBag,
+  ShoppingCart,
+  UtensilsCrossed,
+} from "lucide-react";
+import { TRANSACTIONS } from "../mock-data";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+const CATEGORY_ICON_MAP: Record<string, LucideIcon> = {
+  Shopping: ShoppingBag,
+  "Food & Dining": UtensilsCrossed,
+  Transportation: Car,
+  Entertainment: Film,
+  Groceries: ShoppingCart,
+  Fuel,
+  Electronics: Laptop,
+  Subscriptions: Repeat,
+  Health: HeartPulse,
+  Travel: Plane,
+  Salary: Briefcase,
+};
 
 export function TransactionsList() {
   return (
-    <Table className="text-sm border">
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-25">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Showing 1 of 6 of 43 transactions</TableCell>
-          {/* <TableCell className="text-right">$2,500.00</TableCell> */}
-          <TableCell className="flex justify-end items-end">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+    <section className="space-y-4">
+      <p className="text-sm text-muted-foreground">
+        Showing {TRANSACTIONS.length} transactions
+      </p>
+
+      <div className="grid grid-cols-1 gap-4 ">
+        {TRANSACTIONS.map((transaction) => {
+          const CategoryIcon =
+            CATEGORY_ICON_MAP[transaction.category] ?? CircleDollarSign;
+
+          return (
+            <Card key={transaction.id} className="border bg-card">
+              <CardHeader>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 rounded-md bg-muted p-2 text-muted-foreground">
+                      <CategoryIcon className="size-6" />
+                    </div>
+                    <div>
+                      <CardTitle className="font-semibold text-base -mb-2">
+                        {transaction.merchant}
+                      </CardTitle>
+                      <CardDescription>
+                        {transaction.description}
+                        <DotIcon className="size-8 inline" />
+                        <span>{transaction.category}</span>
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <p className={cn("text-right font-semibold text-base")}>
+                      {transaction.type === "income" ? "+" : "-"}$
+                      {transaction.amount.toFixed(2)}
+                    </p>
+                    <Badge variant="secondary">{transaction.category}</Badge>
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
+          );
+        })}
+      </div>
+    </section>
   );
 }

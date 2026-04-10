@@ -1,11 +1,10 @@
 import { PageHeader } from "@/components/page-header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { CategoriesList } from "@/features/transactions/components/categories-list";
-import { TransactionsAnalysis } from "@/features/transactions/components/transactions-analysis";
 import { TransactionsList } from "@/features/transactions/components/transactions-list";
 import { TransactionsTimeRange } from "@/features/transactions/components/transactions-time-range";
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { DownloadIcon, ListFilterIcon, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/transactions")({
   component: RouteComponent,
@@ -26,22 +25,21 @@ function RouteComponent() {
         }}
       />
 
-      <Tabs defaultValue="list" className="container mx-auto">
+      <div className="container mx-auto space-y-4">
         <section className="flex items-center justify-between">
           <TransactionsTimeRange />
-          <TabsList>
-            <TabsTrigger value="list">List</TabsTrigger>
-            <TabsTrigger value="analysis">Analysis</TabsTrigger>
-          </TabsList>
+          <div className="space-x-2">
+            <Button variant="secondary">
+              <ListFilterIcon className="size-4" /> Filters
+            </Button>
+            <Button variant="secondary">
+              <DownloadIcon className="size-4" /> Export
+            </Button>
+          </div>
         </section>
-        <TabsContent value="list" className="space-y-6 py-6 text-base">
-          <CategoriesList />
-          <TransactionsList />
-        </TabsContent>
-        <TabsContent value="analysis">
-          <TransactionsAnalysis />
-        </TabsContent>
-      </Tabs>
+        <CategoriesList />
+        <TransactionsList />
+      </div>
     </>
   );
 }
