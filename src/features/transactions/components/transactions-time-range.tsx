@@ -7,19 +7,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const TIME_RANGES = [
+  { value: "last-7-days", label: "Last 7 days" },
+  { value: "last-30-days", label: "Last 30 days" },
+  { value: "last-90-days", label: "Last 90 days" },
+  { value: "last-6-months", label: "Last 6 months" },
+  { value: "last-year", label: "Last year" },
+];
+
 export function TransactionsTimeRange() {
   return (
-    <Select>
+    <Select defaultValue="last-30-days">
       <SelectTrigger className="w-full max-w-48">
         <SelectValue placeholder="Select time range" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="food">Last 7 days</SelectItem>
-          <SelectItem value="transportation">Last 30 days</SelectItem>
-          <SelectItem value="entertainment">Last 90 days</SelectItem>
-          <SelectItem value="utilities">Last 6 months</SelectItem>
-          <SelectItem value="healthcare">Last year</SelectItem>
+          {TIME_RANGES.map((range) => (
+            <SelectItem key={range.value} value={range.value}>
+              {range.label}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>
