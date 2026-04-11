@@ -59,7 +59,7 @@ export default function TransactionCard({
             </div>
           </div>
           <div className="space-y-1">
-            <p className={cn("text-right font-semibold text-base")}>
+            <p className={cn("text-right font-bold  text-base")}>
               {transaction.type === "income" ? "+" : "-"}$
               {transaction.amount.toFixed(2)}
             </p>
