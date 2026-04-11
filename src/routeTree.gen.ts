@@ -8,19 +8,28 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TransactionsRouteImport } from './routes/transactions'
-import { Route as BudgetsRouteImport } from './routes/budgets'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 
-const TransactionsRoute = TransactionsRouteImport.update({
+const TransactionsLazyRouteImport = createFileRoute('/transactions')()
+const BudgetsLazyRouteImport = createFileRoute('/budgets')()
+
+const TransactionsLazyRoute = TransactionsLazyRouteImport.update({
   id: '/transactions',
   path: '/transactions',
   getParentRoute: () => rootRouteImport,
-} as any)
-const BudgetsRoute = BudgetsRouteImport.update({
+} as any).lazy(() => import('./routes/transactions.lazy').then((d) => d.Route))
+const BudgetsLazyRoute = BudgetsLazyRouteImport.update({
   id: '/budgets',
   path: '/budgets',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/budgets.lazy').then((d) => d.Route))
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,32 +40,36 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/budgets': typeof BudgetsRoute
-  '/transactions': typeof TransactionsRoute
+  '/login': typeof LoginRoute
+  '/budgets': typeof BudgetsLazyRoute
+  '/transactions': typeof TransactionsLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/budgets': typeof BudgetsRoute
-  '/transactions': typeof TransactionsRoute
+  '/login': typeof LoginRoute
+  '/budgets': typeof BudgetsLazyRoute
+  '/transactions': typeof TransactionsLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/budgets': typeof BudgetsRoute
-  '/transactions': typeof TransactionsRoute
+  '/login': typeof LoginRoute
+  '/budgets': typeof BudgetsLazyRoute
+  '/transactions': typeof TransactionsLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/budgets' | '/transactions'
+  fullPaths: '/' | '/login' | '/budgets' | '/transactions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/budgets' | '/transactions'
-  id: '__root__' | '/' | '/budgets' | '/transactions'
+  to: '/' | '/login' | '/budgets' | '/transactions'
+  id: '__root__' | '/' | '/login' | '/budgets' | '/transactions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BudgetsRoute: typeof BudgetsRoute
-  TransactionsRoute: typeof TransactionsRoute
+  LoginRoute: typeof LoginRoute
+  BudgetsLazyRoute: typeof BudgetsLazyRoute
+  TransactionsLazyRoute: typeof TransactionsLazyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,14 +78,21 @@ declare module '@tanstack/react-router' {
       id: '/transactions'
       path: '/transactions'
       fullPath: '/transactions'
-      preLoaderRoute: typeof TransactionsRouteImport
+      preLoaderRoute: typeof TransactionsLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/budgets': {
       id: '/budgets'
       path: '/budgets'
       fullPath: '/budgets'
-      preLoaderRoute: typeof BudgetsRouteImport
+      preLoaderRoute: typeof BudgetsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,8 +107,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BudgetsRoute: BudgetsRoute,
-  TransactionsRoute: TransactionsRoute,
+  LoginRoute: LoginRoute,
+  BudgetsLazyRoute: BudgetsLazyRoute,
+  TransactionsLazyRoute: TransactionsLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

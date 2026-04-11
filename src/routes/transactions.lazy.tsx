@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { CategoriesList } from "@/features/transactions/components/categories-list";
 import { TransactionsList } from "@/features/transactions/components/transactions-list";
 import { TransactionsTimeRange } from "@/features/transactions/components/transactions-time-range";
-import { createFileRoute } from "@tanstack/react-router";
-import { DownloadIcon, ListFilterIcon, Plus } from "lucide-react";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { DownloadIcon, ListFilterIcon, PlusIcon } from "lucide-react";
 
-export const Route = createFileRoute("/transactions")({
+export const Route = createLazyFileRoute("/transactions")({
   component: RouteComponent,
 });
 
@@ -18,11 +18,23 @@ function RouteComponent() {
         title="Transaction History"
         description="Track your financial transactions with precision and editorial clarity."
         headingId="budgets-heading"
-        action={{
-          label: "Add Transaction",
-          ariaLabel: "Add transaction",
-          icon: <Plus className="size-4" />,
-        }}
+        breadcrumbs={[
+          { label: "Home", to: "/" },
+          { label: "Budgets" }, // no "to" → renders as current page
+        ]}
+        actions={[
+          {
+            label: "Export",
+            variant: "outline",
+            icon: <DownloadIcon className="size-4" />,
+            onClick: () => {},
+          },
+          {
+            label: "Add Transaction",
+            icon: <PlusIcon className="size-4" />,
+            onClick: () => {},
+          },
+        ]}
       />
 
       <div className="container mx-auto space-y-4">
@@ -31,9 +43,6 @@ function RouteComponent() {
           <div className="space-x-2">
             <Button variant="secondary">
               <ListFilterIcon className="size-4" /> Filters
-            </Button>
-            <Button variant="secondary">
-              <DownloadIcon className="size-4" /> Export
             </Button>
           </div>
         </section>

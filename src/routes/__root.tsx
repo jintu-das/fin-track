@@ -1,14 +1,6 @@
 import { AppSidebar } from "@/components/nav/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import {
   SidebarInset,
   SidebarProvider,
@@ -16,7 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { BellIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { BellIcon, SearchIcon, SettingsIcon, UserIcon } from "lucide-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const RootLayout = () => (
@@ -25,22 +17,19 @@ const RootLayout = () => (
     <SidebarInset>
       <header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 z-10">
         <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb className="hidden md:block">
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
 
         <p className="block md:hidden text-sm leading-tight font-medium">
           FinTrack
         </p>
+
+        <div className="hidden md:relative w-full max-w-sm">
+          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            className="w-full bg-muted pl-9"
+            placeholder="Search wealth assets, transactions..."
+          />
+        </div>
 
         <div className="flex-1 flex justify-end gap-3">
           <Button variant="ghost" size="icon" className="end-auto">

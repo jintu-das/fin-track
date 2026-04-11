@@ -27,14 +27,16 @@ function Index() {
   return (
     <>
       <PageHeader
-        title="Hello Jintu"
+        title="Hello, Jintu"
         description="Your net worth is $100,000.00 and your total expenses for the month are $2,500.00."
         headingId="budgets-heading"
-        action={{
-          label: "Generate Report",
-          ariaLabel: "Generate financial report",
-          icon: <DownloadIcon className="size-4" />,
-        }}
+        actions={[
+          {
+            label: "Generate Report",
+            ariaLabel: "Generate financial report",
+            icon: <DownloadIcon className="size-4" />,
+          },
+        ]}
       />
 
       <section className="container mx-auto grid grid-cols-12 grid-rows-4  gap-4">
