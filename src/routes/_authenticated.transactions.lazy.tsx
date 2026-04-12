@@ -6,7 +6,7 @@ import { TransactionsTimeRange } from "@/features/transactions/components/transa
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { DownloadIcon, ListFilterIcon, PlusIcon } from "lucide-react";
 
-export const Route = createLazyFileRoute("/transactions")({
+export const Route = createLazyFileRoute("/_authenticated/transactions")({
   component: RouteComponent,
 });
 

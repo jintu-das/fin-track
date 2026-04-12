@@ -3,7 +3,7 @@ import { BudgetsList } from "@/features/budgets/components/budgets-list";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { PlusIcon, UploadIcon } from "lucide-react";
 
-export const Route = createLazyFileRoute("/budgets")({
+export const Route = createLazyFileRoute("/_authenticated/budgets")({
   component: BudgetsPage,
 });
 

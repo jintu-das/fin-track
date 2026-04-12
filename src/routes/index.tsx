@@ -1,107 +1,62 @@
-import { PageHeader } from "@/components/page-header";
-import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { SpendingVelocity } from "@/features/dashboard/components/spending-velocity";
-import { TotalNetWorth } from "@/features/dashboard/components/total-net-worth";
-import { RecentTransactions } from "@/features/transactions/components/recent-transactions";
-import { createFileRoute } from "@tanstack/react-router";
-import {
-  BanknoteArrowDownIcon,
-  BanknoteIcon,
-  DownloadIcon,
-  PiggyBankIcon,
-  ShoppingBasketIcon,
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronRightIcon } from "lucide-react";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: HomeComponent,
 });
 
 // eslint-disable-next-line react-refresh/only-export-components
-function Index() {
+function HomeComponent() {
   return (
     <>
-      <PageHeader
-        title="Hello, Jintu"
-        description="Your net worth is $100,000.00 and your total expenses for the month are $2,500.00."
-        headingId="budgets-heading"
-        actions={[
-          {
-            label: "Generate Report",
-            ariaLabel: "Generate financial report",
-            icon: <DownloadIcon className="size-4" />,
-          },
-        ]}
-      />
+      <header className="container mx-auto flex flex-col md:flex-row items-center gap-2 justify-between py-4">
+        <h1 className="text-sm font-medium">FinTrack</h1>
+        <nav className="space-x-3">
+          <Button variant="link" asChild>
+            Features
+          </Button>
+          <Button variant="link" asChild>
+            Solutions
+          </Button>
+          <Button variant="link" asChild>
+            Pricing
+          </Button>
+          <Button variant="link" asChild>
+            About
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/login">Sign In</Link>
+          </Button>
+          <Button variant="default" asChild>
+            <Link to="/dashboard">Get Started</Link>
+          </Button>
+        </nav>
+      </header>
+      <main className="container mx-auto grid grid-cols-2 items-center gap-12 py-12">
+        <section className="flex flex-col items-start gap-6 py-12">
+          <h2 className="text-4xl font-bold uppercase tracking-wide">
+            Crafting wealth with{" "}
+            <strong className="text-primary">architectural</strong> precision
+          </h2>
+          <p className="text-muted-foreground">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloribus
+            soluta repellendus expedita sunt assumenda deserunt est inventore
+            delectus harum suscipit aliquam doloremque sed voluptatem incidunt,
+            dolore nostrum, deleniti, debitis quae.
+          </p>
+          <div className="space-x-2">
+            <Button size="lg">Start Your Journey</Button>
+            <Button size="lg" variant="secondary">
+              View Methodology <ChevronRightIcon className="size-4" />{" "}
+            </Button>
+          </div>
+        </section>
 
-      <section className="container mx-auto grid grid-cols-12 grid-rows-4  gap-4">
-        <TotalNetWorth className="col-span-8 row-span-4" />
-
-        <Card className="col-span-4 h-full ">
-          <CardHeader>
-            <CardTitle className="text-sm uppercase text-muted-foreground font-medium">
-              Monthly Income
-            </CardTitle>
-            <CardDescription className="text-black/80 text-3xl font-black">
-              $ 24,500
-            </CardDescription>
-            <CardAction>
-              <BanknoteIcon className="size-8" />
-            </CardAction>
-          </CardHeader>
-        </Card>
-        <Card className="col-span-4 h-full ">
-          <CardHeader>
-            <CardTitle className="text-sm uppercase text-muted-foreground font-medium">
-              Monthly Expenses
-            </CardTitle>
-            <CardDescription className="text-black/80  text-3xl font-black">
-              $ 24,500
-            </CardDescription>
-            <CardAction>
-              <ShoppingBasketIcon className="size-8" />
-            </CardAction>
-          </CardHeader>
-        </Card>
-
-        <Card className="col-span-4 h-full ">
-          <CardHeader>
-            <CardTitle className="text-sm uppercase text-muted-foreground font-medium">
-              Savings Rate
-            </CardTitle>
-            <CardDescription className="text-black/80 text-3xl font-black">
-              15%
-            </CardDescription>
-            <CardAction>
-              <PiggyBankIcon className="size-8" />
-            </CardAction>
-          </CardHeader>
-        </Card>
-
-        <Card className="col-span-4 h-full ">
-          <CardHeader>
-            <CardTitle className="text-sm uppercase text-muted-foreground font-medium">
-              Net Worth Change
-            </CardTitle>
-            <CardDescription className="text-black/80 text-3xl font-black">
-              +$ 2,500
-            </CardDescription>
-            <CardAction>
-              <BanknoteArrowDownIcon className="size-8" />
-            </CardAction>
-          </CardHeader>
-        </Card>
-      </section>
-
-      <section className="container mx-auto grid grid-cols-12 grid-flow-row gap-6">
-        <SpendingVelocity className="col-span-4" />
-        <RecentTransactions />
-      </section>
+        <Skeleton className="h-100 w-full rounded-md" />
+      </main>
+      <footer></footer>
     </>
   );
 }
