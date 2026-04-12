@@ -19,7 +19,7 @@ function RouteComponent() {
         description="Track your financial transactions with precision and editorial clarity."
         headingId="budgets-heading"
         breadcrumbs={[
-          { label: "Home", to: "/" },
+          { label: "Home", to: "/dashboard" },
           { label: "Budgets" }, // no "to" → renders as current page
         ]}
         actions={[
