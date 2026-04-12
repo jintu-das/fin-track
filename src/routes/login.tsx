@@ -1,22 +1,40 @@
-import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { sleep } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  createFileRoute,
+  Link,
   redirect,
   useRouter,
   useRouterState,
-  createFileRoute,
 } from "@tanstack/react-router";
+import { LoaderIcon, WalletIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { useAuth } from "../auth";
-import { sleep } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const fallback = "/dashboard" as const;
+
+const loginFormSchema = z.object({
+  email: z.email("Please enter a valid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export const Route = createFileRoute("/login")({
   validateSearch: z.object({
-    redirect: z.string().optional().catch(""),
+    redirect: z.string().optional().default(""),
   }),
   beforeLoad: ({ context, search }) => {
     if (context.auth.isAuthenticated) {
@@ -32,20 +50,19 @@ function LoginComponent() {
   const router = useRouter();
   const isLoading = useRouterState({ select: (s) => s.isLoading });
   const navigate = Route.useNavigate();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const search = Route.useSearch();
 
-  const onFormSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
-    setIsSubmitting(true);
+  const onFormSubmit = async (values: LoginFormValues) => {
     try {
-      evt.preventDefault();
-      const data = new FormData(evt.currentTarget);
-      const fieldValue = data.get("username");
-
-      if (!fieldValue) return;
-      const username = fieldValue.toString();
-      await auth.login(username);
+      await auth.login(values.email);
 
       await router.invalidate();
 
@@ -56,45 +73,90 @@ function LoginComponent() {
       await navigate({ to: search.redirect || fallback });
     } catch (error) {
       console.error("Error logging in: ", error);
-    } finally {
-      setIsSubmitting(false);
+      form.setError("root", {
+        message: "Unable to login right now. Please try again.",
+      });
     }
   };
 
-  const isLoggingIn = isLoading || isSubmitting;
+  const isLoggingIn = isLoading || form.formState.isSubmitting;
+  const emailError = form.formState.errors.email;
+  const passwordError = form.formState.errors.password;
 
   return (
     <main className="grid grid-cols-1 md:grid-cols-2 h-full min-h-dvh">
       <section className="max-w-lg mx-auto grid place-content-center p-4 gap-2">
-        <h1 className="text-2xl font-semibold">Welcome Back</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ut
-          consequatur nesciunt blanditiis perferendis dolorem ducimus ipsa, quia
-          omnis deserunt nobis vitae, accusamus repellat autem itaque,
-          laboriosam iusto officiis ex?
+        <Link to="/dashboard" className="flex gap-2 items-center mb-4">
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+            <WalletIcon className="size-4" />
+          </div>
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-medium">FinTrack</span>
+            <span className="truncate text-xs">Wealth Management</span>
+          </div>
+        </Link>
+
+        <h1 className="text-2xl font-medium">Welcome back</h1>
+        <p
+          className="text-sm text-muted-foreground
+        "
+        >
+          Please enter your credentials to access our account.
         </p>
 
-        <form className="mt-4 max-w-lg" onSubmit={onFormSubmit}>
+        <form
+          className="mt-4 max-w-lg"
+          onSubmit={form.handleSubmit(onFormSubmit)}
+          noValidate
+        >
           <fieldset disabled={isLoggingIn} className="w-full grid gap-2">
-            <div className="grid gap-2 items-center min-w-[300px]">
-              <label htmlFor="username-input" className="text-sm font-medium">
-                Username
-              </label>
-              <input
-                id="username-input"
-                name="username"
-                placeholder="Enter your name"
-                type="text"
-                className="border rounded-md p-2 w-full"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md w-full disabled:bg-gray-300 disabled:text-gray-500"
-            >
-              {isLoggingIn ? "Loading..." : "Login"}
-            </button>
+            <FieldGroup>
+              <Field data-invalid={!!emailError}>
+                <FieldLabel htmlFor="email-label">Email Address</FieldLabel>
+                <Input
+                  id="email-label"
+                  type="email"
+                  placeholder="Enter your email"
+                  aria-invalid={!!emailError}
+                  {...form.register("email")}
+                />
+                <FieldDescription>
+                  We&apos;ll never share your email with anyone else.
+                </FieldDescription>
+                <FieldError errors={[emailError]} />
+              </Field>
+
+              <Field data-invalid={!!passwordError}>
+                <FieldLabel htmlFor="password-label">Password</FieldLabel>
+                <Input
+                  id="password-label"
+                  type="password"
+                  placeholder="Enter your password"
+                  aria-invalid={!!passwordError}
+                  {...form.register("password")}
+                />
+                <FieldError errors={[passwordError]} />
+              </Field>
+            </FieldGroup>
+
+            <Field className="space-y-3 my-4">
+              <Button type="submit" disabled={isLoggingIn} className="w-full">
+                {isLoggingIn && <LoaderIcon className="animate-spin" />}
+                {isLoggingIn ? "Loading..." : "Submit"}
+              </Button>
+
+              <FieldError>{form.formState.errors.root?.message}</FieldError>
+
+              <FieldSeparator className="mb-3">Or continue with</FieldSeparator>
+
+              <Button variant="outline" type="button">
+                Login with Google
+              </Button>
+              <FieldDescription className="text-center">
+                Don&apos;t have an account?{" "}
+                <button type="button">Sign up</button>
+              </FieldDescription>
+            </Field>
           </fieldset>
         </form>
       </section>

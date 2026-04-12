@@ -1,18 +1,25 @@
 import { useAuth } from "@/auth";
-import {
-  createFileRoute,
-  Outlet,
-  redirect,
-  useRouter,
-} from "@tanstack/react-router";
 import { AppSidebar } from "@/components/nav/app-sidebar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useRouter,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import {
   BellIcon,
@@ -79,18 +86,25 @@ function AuthLayout() {
             <Button variant="ghost" size="icon" className="end-auto">
               <SettingsIcon className="size-4" />
             </Button>
-            <Button variant="secondary" size="icon" className="end-auto">
-              <UserIcon className="size-4" />
-            </Button>
 
-            <Button
-              variant="secondary"
-              size="icon"
-              className="end-auto"
-              onClick={handleLogout}
-            >
-              <LogOutIcon className="size-4" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="end-auto">
+                  <UserIcon className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    variant="destructive"
+                  >
+                    <LogOutIcon />
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
